@@ -70,4 +70,4 @@ for edge in edges:
 
  
 print("Algo Jones began his search in the Pyramid of Khufu...") 
-g.DFS(1)
+g.DFS(1) # Entrance is chamber 1
