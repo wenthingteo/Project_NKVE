@@ -16,8 +16,6 @@ def decode(text, s):
 
 text = "Wkh vwdwxh lv exuulhg xqghu d wuhh pdunhg zlwk a rq Foxvwhu Lvodqg"
 s = 3
-print("Text  : " + text)
-print("Shift : " + str(s))
-print("Cipher: " + decode(text, s))
+print("Decoded Message: " + decode(text, s))
 
 
