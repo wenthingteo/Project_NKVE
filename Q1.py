@@ -10,9 +10,6 @@ def DFS(V, adj, s):
     # Initializes all vertices as not visited 
     visited = [False for i in range(V+1)] 
 
-    # Record the number of chambers visited
-    count = 0
-
     # Create a stack for DFS 
     # Stack is last in first out(LIFO), 
     # and since the adjacency list is filled in ascending order of chamber number,
@@ -21,11 +18,14 @@ def DFS(V, adj, s):
 
     # Create a list to keep track of visited node
     visitedList = []
+    
+    # Record the number of chambers visited
+    count = 0
 
     # Push the current source node to the stack
     stack.append(s) 
-
-    while (count<25): 
+    
+    while (count<V): 
         # Pop a vertex from stack
         s = stack.pop()
 
@@ -45,7 +45,7 @@ def DFS(V, adj, s):
                 stack.append(node)
                 allUnvisited = False 
         # If all of the adjacent vertices have been visited, backtrack to the unvisited vertex
-        if (count !=25 and allUnvisited):
+        if (count !=V and allUnvisited):
             print('Backtracking...')
         
     # Print the sequence of chambers visited
@@ -53,8 +53,7 @@ def DFS(V, adj, s):
                 
         
 V = 25  # Total 25 vertices in graph
-adj = [[] for _ in range(V+1)]
-
+adj = [[] for i in range(V+1)]
 # Define all the edges in the graph
 edges = [(1,2),(1,6),(2,3),(3,8),(4,5),(5,10),(6,11),(7,8),(7,12),(8,9),(8,13),(9,10),(10,15),(11,12)
          ,(12,17),(13,18),(14,19),(15,20),(16,17),(16,21),(17,22),(18,23),(19,20),(23,24),(24,25)]
