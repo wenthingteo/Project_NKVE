@@ -3,27 +3,23 @@ def compare_letters(file1, file2):
     with open(file1, 'r') as f1, open(file2, 'r') as f2:
         words1 = f1.read().split()
         words2 = f2.read().split()
-
-    # Create a hash table for the words in the first letter
-    hash_table = {word: True for word in words1}
-
+    
+    # Create sets from the words
+    set1 = set(words1)
+    set2 = set(words2)
+    
+    # Find the intersection of the sets
+    common_words = set1.intersection(set2)
+    
+    # Identify the differences by comparing against the intersection
     differences = []
-
-    # Compare words from the second letter against the hash table
-    for word in words2:
-        if word not in hash_table:
-            differences.append(word)
-
+    for word1, word2 in zip(words1, words2):
+        if word1 not in common_words or word2 not in common_words:
+            differences.append((word1, word2))
+    
     # Print the differences
-    for changed_word in differences:
-        original_word = find_original_word(changed_word, words1, words2)
-        print(f'Difference: {original_word} -> {changed_word}')
-
-def find_original_word(changed_word, words1, words2):
-    for index, word in enumerate(words2):
-        if word == changed_word:
-            return words1[index] if index < len(words1) else ''
-    return ''
+    for diff in differences:
+        print(f'Difference: {diff[0]} -> {diff[1]}')
 
 # File names
 file1 = 'letter1.txt'
