@@ -1,7 +1,9 @@
-def weighted_scoring_island(islands, weights):
-    # Hiigher score indicate more dangerous island
-    land_condition_score = islands[1]
-    wild_animals_score = islands[2]
+from tabulate import tabulate
+
+def weighted_scoring_island(island, weights):
+    # Higher score indicates a more dangerous island
+    land_condition_score = island['land_condition_score']
+    wild_animals_score = island['wild_animals_score']
 
     score = (
         weights['land_condition'] * land_condition_score +
@@ -12,30 +14,27 @@ def weighted_scoring_island(islands, weights):
 
 # Weight assumptions
 weights = {
-    'land_condition': 0.4,
-    'wild_animals': 0.6
+    'land_condition': 0.3,
+    'wild_animals': 0.7
 }
 
-# Input data (Location, Land condition, Wild animals)
+# Input data as list of dictionaries
 islands = [
-    ("North",5,5),
-    ("South",4,3),
-    ("East",2,5),
-    ("West",3,4),
-    ("Middle",1,1)
+    {"location": "North", "land_condition": "Swamp area", "wild_animals": "Full of wild animals", "land_condition_score": 5, "wild_animals_score": 5},
+    {"location": "South", "land_condition": "Mountains and caves", "wild_animals": "Some wild animals", "land_condition_score": 4, "wild_animals_score": 3},
+    {"location": "East", "land_condition": "Thick woods and a lake", "wild_animals": "Full of wild animals", "land_condition_score": 2, "wild_animals_score": 5},
+    {"location": "West", "land_condition": "Sandy flat land", "wild_animals": "Small but poisonous animals", "land_condition_score": 3, "wild_animals_score": 4},
+    {"location": "Middle", "land_condition": "Inhabited with villages and agriculture area", "wild_animals": "No wild animals", "land_condition_score": 1, "wild_animals_score": 1}
 ]
 
 island_scores = []
 
-# Calculate the weighted score for each island
 for island in islands:
-    score = weighted_scoring_island(island, weights)
-    island_scores.append((score, island[0]))
+    island['total_score'] = weighted_scoring_island(island, weights)
+    island_scores.append([island['location'], island['land_condition'], island['wild_animals'], island['total_score']])
 
-sorted_island_scores = sorted(island_scores, key=lambda x: x[0])
+island_scores.sort(key=lambda x: x[3])
 
-print("Island Location (from Safest to Most Dangerous)")
-i = 1
-for island in sorted_island_scores:
-    print(f"{i} {island[1]}")
-    i += 1
+# Print the table
+print(tabulate(island_scores, headers=["Island Location", "Land Condition", "Wild Animals", "Score"]))
+print(f"\nThe safest island to search is {island_scores[0][0]} island.")
