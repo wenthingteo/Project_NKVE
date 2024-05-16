@@ -14,12 +14,15 @@ def compare_letters(file1, file2):
     # Identify the differences by comparing against the intersection
     differences = []
     for word1, word2 in zip(words1, words2):
-        if word1 not in common_words or word2 not in common_words:
+        if word1 != word2:
             differences.append((word1, word2))
+    
+    # Print the header for differences
+    print("Different words between letter 1 and letter 2:")
     
     # Print the differences
     for diff in differences:
-        print(f'Difference: {diff[0]} -> {diff[1]}')
+        print(f'{diff[0]} -> {diff[1]}')
 
 # File names
 file1 = 'letter1.txt'
