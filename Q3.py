@@ -13,7 +13,7 @@ def choosing_treasures(bag_w, item_w, value, num_items):
     ]
 
     # Placeholder value for 'Priceless' during calculation
-    priceless_value = 1000
+    priceless_value = 10000
 
     # Initialize a 2D list (DP table) to store maximum values
     K = [[0 for _ in range(bag_w + 1)] for _ in range(num_items + 1)]
@@ -46,11 +46,11 @@ def choosing_treasures(bag_w, item_w, value, num_items):
 
     # Print output in columns
     selected_item_weight = 0
-    print("Selected Item".ljust(30), "Value($ Mil)".ljust(18), "Weight(kg)")
+    print("Selected Item".ljust(30), "Value".ljust(18), "Weight(kg)")
     for item in selected_items:
         selected_item_weight += item[2]
         # Replace placeholder value with 'Priceless' in the output
-        value_str = 'Priceless' if item[1] == 'Priceless' else f"${item[1]} Mil"
+        value_str = 'Priceless' if item[1] == 'Priceless' else f"${item[1]} Million"
         print(item[0].ljust(30), value_str.ljust(18), str(item[2]))
 
     return (f"\nTotal value in the bag: ${K[num_items][bag_w]} Million\nTotal weight in the bag: {selected_item_weight} kg")
