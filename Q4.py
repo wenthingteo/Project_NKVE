@@ -1,32 +1,40 @@
-def compare_letters(file1, file2):
-    # Read the contents of the files and split into words
-    with open(file1, 'r') as f1, open(file2, 'r') as f2:
-        words1 = f1.read().split()
-        words2 = f2.read().split()
+def myers_diff(letter_1, letter_2):
+    # Split text into words
+    words_1 = letter_1.split()
+    words_2 = letter_2.split()
     
-    # Create sets from the words
-    set1 = set(words1)
-    set2 = set(words2)
+    # Initialize the matrix
+    rows = len(words_1) + 1
+    cols = len(words_2) + 1
+    dp = [[0] * cols for _ in range(rows)]
     
-    # Find the intersection of the sets
-    common_words = set1.intersection(set2)
+    # Fill in the matrix
+    for i in range(1, rows):
+        for j in range(1, cols):
+            if words_1[i - 1] == words_2[j - 1]:
+                dp[i][j] = dp[i - 1][j - 1] + 1
+            else:
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
     
-    # Identify the differences by comparing against the intersection
+    # Traceback to find the differences
+    i, j = rows - 1, cols - 1
     differences = []
-    for word1, word2 in zip(words1, words2):
-        if word1 != word2:
-            differences.append((word1, word2))
-    
-    # Print the header for differences
-    print("Different words between letter 1 and letter 2:")
-    
-    # Print the differences
-    for diff in differences:
-        print(f'{diff[0]} -> {diff[1]}')
+    while i > 0 or j > 0:
+        if i > 0 and j > 0 and words_1[i - 1] == words_2[j - 1]:
+            i -= 1
+            j -= 1
+        else:
+            differences.append(f"Changed '{words_1[i - 1]}' to '{words_2[j - 1]}'")
+            i -= 1
+            j -= 1
+            
+    # Reverse to get correct order
+    return differences[::-1]  
 
-# File names
-file1 = 'letter1.txt'
-file2 = 'letter2.txt'
-
-# Compare the letters
-compare_letters(file1, file2)
+# Implementation
+letter_1 = "To My Dearest Nefertari,\nAs I sit here amidst the grandeur of this ancient pyramid, surrounded by the whispers of the past, my thoughts turn to you, my beloved. Though miles may separate us, know that you are always in my heart, a beacon of light guiding me through the darkness of the unknown.\nAs I embark on this journey into the depths of the pyramid, I am filled with a mixture of excitement and trepidation. The allure of uncovering ancient secrets and treasures beckons me forward, but with each step I take, I am reminded of the risks that accompany such endeavors.\nI cannot help but think of the life we have built together, the moments of joy and laughter we have shared, and the love that binds us together across time and space. It is your unwavering support and encouragement that give me strength in the face of uncertainty, and for that, I am eternally grateful.\nThough the sands of time may have long since buried the civilization that built this magnificent structure, I find solace in the knowledge that our love transcends the ages, a timeless testament to the power of the human spirit.\nUntil we are reunited once more, know that you are always with me, guiding me through the labyrinth of life with your love and light.\nWith all my heart,\nYour devoted."
+letter_2 = "To My Dearest Nefertari,\nAs I sit here amidst the grandeur of this antediluvian pyramid, surrounded by the whispers of the past, my thoughts turn to you, my beloved. Though miles may separate us, know that you are always in my heart, a beacon of light guiding me through the darkness of the unknown.\nAs I embark on this voyage into the depths of the pyramid, I am filled with a mixture of excitement and trepidation. The allure of uncovering ancient secrets and treasures beckons me forward, but with each step I take, I am reminded of the risks that accompany such endeavors.\nI cannot help but think of the life we have built together, the moments of joy and laughter we have shared, and the love that binds us together within time and space. It is your unwavering support and encouragement that give me strength in the face of uncertainty, and for that, I am eternally grateful.\nThough the sands of time may have long since buried the society that built this magnificent structure, I find solace in the knowledge that our love transcends the ages, a timeless testament to the power of the human spirit.\nUntil we are reunited once more, know that you are always with me, guiding me through the labyrinth of life with your love and light.\nWith all my heart,\nYour devoted."
+print("Different words between letter 1 and letter 2:")
+differences = myers_diff(letter_1, letter_2)
+for diff in differences:
+    print(diff)
