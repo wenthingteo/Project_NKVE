@@ -6,15 +6,15 @@ def myers_diff(letter_1, letter_2):
     # Initialize the matrix
     rows = len(words_1) + 1
     cols = len(words_2) + 1
-    dp = [[0] * cols for _ in range(rows)]
+    matrix = [[0] * cols for _ in range(rows)]
     
     # Fill in the matrix
     for i in range(1, rows):
         for j in range(1, cols):
             if words_1[i - 1] == words_2[j - 1]:
-                dp[i][j] = dp[i - 1][j - 1] + 1
+                matrix[i][j] = matrix[i - 1][j - 1] + 1
             else:
-                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+                matrix[i][j] = max(matrix[i - 1][j], matrix[i][j - 1])
     
     # Traceback to find the differences
     i, j = rows - 1, cols - 1
